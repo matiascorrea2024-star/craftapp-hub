@@ -1,14 +1,13 @@
 import type { Metadata, Viewport } from "next";
-import { Instrument_Serif, Inter, JetBrains_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import { HUB_SITE_NAME, HUB_SITE_URL } from "@/config/tools";
 import "./globals.css";
 
-const instrumentSerif = Instrument_Serif({
+const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  weight: ["400"],
-  style: ["normal", "italic"],
-  variable: "--font-serif",
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-display",
   display: "swap",
 });
 
@@ -21,17 +20,17 @@ const inter = Inter({
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
-  weight: ["400", "500"],
+  weight: ["400", "500", "600"],
   variable: "--font-mono",
   display: "swap",
 });
 
 const DESCRIPTION =
-  "Free, no-signup client workflow tools for US freelancers and boutique agencies: quote 3-tier prices with RateCraft and lock scope boundaries with ScopeCraft.";
+  "Free, no-signup client workflow tools for US freelancers and boutique agencies: quote 3-tier prices with RateCraft, lock scope boundaries with ScopeCraft, and follow up on overdue invoices cleanly.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(HUB_SITE_URL),
-  title: `${HUB_SITE_NAME} — Freelance Pricing & Scope Protection Tools`,
+  title: `${HUB_SITE_NAME} — Freelance Pricing, Scope Protection & Invoice Follow-Up`,
   description: DESCRIPTION,
   verification: {
     google: "Aj3hyozFjklDX3tH4JdgwTcpRNxAk3uXxp_b2AR4y94",
@@ -43,12 +42,12 @@ export const metadata: Metadata = {
     type: "website",
     url: HUB_SITE_URL,
     siteName: HUB_SITE_NAME,
-    title: `${HUB_SITE_NAME} — Price Projects & Stop Scope Creep`,
+    title: `${HUB_SITE_NAME} — Price Projects, Stop Scope Creep & Get Paid`,
     description: DESCRIPTION,
   },
   twitter: {
     card: "summary_large_image",
-    title: `${HUB_SITE_NAME} — Price Projects & Stop Scope Creep`,
+    title: `${HUB_SITE_NAME} — Price Projects, Stop Scope Creep & Get Paid`,
     description: DESCRIPTION,
   },
 };
@@ -56,7 +55,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#FAFAF8",
+  themeColor: "#090D16",
 };
 
 export default function RootLayout({
@@ -67,9 +66,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${instrumentSerif.variable} ${inter.variable} ${jetbrainsMono.variable}`}
+      className={`${plusJakarta.variable} ${inter.variable} ${jetbrainsMono.variable}`}
     >
-      <body className="font-sans bg-canvas text-ink min-h-screen flex flex-col">
+      <body className="font-sans bg-[#F8FAFC] text-[#0F172A] min-h-screen flex flex-col">
         {children}
         <Analytics />
       </body>
