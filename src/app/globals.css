@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  body {
+    overflow-x: clip;
+    max-width: 100%;
+    background-color: #fafaf8;
+    color: #111315;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background-color: #ecf5f2;
+    color: #0f5c4a;
+  }
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
