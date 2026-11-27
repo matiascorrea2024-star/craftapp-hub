@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { track } from "@vercel/analytics";
 import {
@@ -8,6 +9,7 @@ import {
   Check,
   FileText,
   Layers,
+  Mail,
   ShieldCheck,
   TrendingUp,
 } from "lucide-react";
@@ -23,6 +25,7 @@ import {
 function ToolIcon({ toolKey }: { toolKey: StudioTool["key"] }) {
   if (toolKey === "rate") return <TrendingUp className="w-4 h-4 text-forest" />;
   if (toolKey === "audit") return <ShieldCheck className="w-4 h-4 text-forest" />;
+  if (toolKey === "invoice") return <Mail className="w-4 h-4 text-forest" />;
   return <FileText className="w-4 h-4 text-forest" />;
 }
 
@@ -37,6 +40,7 @@ export function HubClient() {
 
   const rateTool = STUDIO_TOOLS.find((t) => t.key === "rate")!;
   const auditTool = STUDIO_TOOLS.find((t) => t.key === "audit")!;
+  const invoiceTool = STUDIO_TOOLS.find((t) => t.key === "invoice")!;
 
   const handleToolClick = (toolName: string, targetUrl: string) => {
     track("hub_tool_launch", {
@@ -74,6 +78,12 @@ export function HubClient() {
           </div>
 
           <div className="flex items-center gap-2 shrink-0">
+            <Link
+              href="/invoice-followup"
+              className="hidden sm:inline-flex items-center justify-center min-h-[44px] px-3.5 text-xs sm:text-sm font-medium text-ink-secondary hover:text-ink transition-colors"
+            >
+              InvoiceFollowUp
+            </Link>
             <a
               href="#pro-passes"
               className="inline-flex items-center justify-center min-h-[44px] px-4 rounded-lg border border-hairline bg-paper text-xs sm:text-sm font-medium text-ink hover:border-ink/30 transition-colors"
@@ -95,7 +105,7 @@ export function HubClient() {
                   Matched From {sourceLabel}
                 </span>
                 <span className="text-xs text-ink-muted font-mono">
-                  Free US Letter PDF • No Signup
+                  Free Tool • No Signup
                 </span>
               </div>
 
@@ -133,7 +143,7 @@ export function HubClient() {
               </div>
             </div>
           ) : (
-            <div className="max-w-3xl">
+            <div className="max-w-4xl">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-subtle border border-hairline text-xs font-mono uppercase tracking-wider text-ink-secondary mb-4">
                 <span>US Freelancers &amp; Boutique Agencies</span>
                 {fromParam ? (
@@ -145,23 +155,23 @@ export function HubClient() {
               </div>
 
               <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl text-ink leading-[1.05] tracking-tight">
-                Price the work cleanly. Lock the scope before kickoff.
+                Price the work. Protect the scope. Get paid cleanly.
               </h1>
-              <p className="text-base sm:text-lg text-ink-secondary mt-4 leading-relaxed">
-                Two focused, zero-signup client document tools built for real US freelance workflows. Generate an instant quote or SOW in under 60 seconds, then export a clean US Letter PDF.
+              <p className="text-base sm:text-lg text-ink-secondary mt-4 max-w-2xl leading-relaxed">
+                Three focused, zero-signup client tools built for US freelance workflows—send 3-tier quote PDFs, lock structured SOWs, and follow up on overdue invoices in seconds.
               </p>
 
               {/* 1-Tap Problem Selector */}
-              <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-3">
                 <a
                   href={buildTrackedUrl(rateTool.baseUrl, sourceSlug, "hero_selector")}
                   onClick={() => handleToolClick("ratecraft_hero", rateTool.baseUrl)}
-                  className="flex items-center justify-between gap-3 min-h-[52px] px-4 py-3 rounded-xl bg-forest hover:bg-forest-hover text-white transition-colors"
+                  className="flex items-center justify-between gap-3 min-h-[54px] px-4 py-3 rounded-xl bg-forest hover:bg-forest-hover text-white transition-colors"
                 >
                   <div className="text-left">
                     <div className="text-sm font-medium">I need to price a project</div>
                     <div className="text-xs text-white/80">
-                      Open RateCraft 3-Tier Quote Studio
+                      Open RateCraft 3-Tier Studio
                     </div>
                   </div>
                   <ArrowRight className="w-4 h-4 shrink-0" />
@@ -170,40 +180,56 @@ export function HubClient() {
                 <a
                   href={buildTrackedUrl(auditTool.baseUrl, sourceSlug, "hero_selector")}
                   onClick={() => handleToolClick("audit_hero", auditTool.baseUrl)}
-                  className="flex items-center justify-between gap-3 min-h-[52px] px-4 py-3 rounded-xl border border-hairline bg-paper hover:border-ink/30 text-ink transition-colors"
+                  className="flex items-center justify-between gap-3 min-h-[54px] px-4 py-3 rounded-xl border border-hairline bg-paper hover:border-ink/30 text-ink transition-colors"
                 >
                   <div className="text-left">
                     <div className="text-sm font-medium">
-                      Check my scope before sending
+                      Check scope before kickoff
                     </div>
                     <div className="text-xs text-ink-secondary">
-                      Run 60s ScopeCraft Risk Audit
+                      Run 60s ScopeCraft Audit
                     </div>
                   </div>
                   <ArrowRight className="w-4 h-4 shrink-0 text-ink-secondary" />
                 </a>
+
+                <Link
+                  href="/invoice-followup"
+                  onClick={() =>
+                    handleToolClick("invoice_hero", invoiceTool.baseUrl)
+                  }
+                  className="flex items-center justify-between gap-3 min-h-[54px] px-4 py-3 rounded-xl border border-hairline bg-paper hover:border-ink/30 text-ink transition-colors"
+                >
+                  <div className="text-left">
+                    <div className="text-sm font-medium">Client is late paying</div>
+                    <div className="text-xs text-ink-secondary">
+                      Open InvoiceFollowUp
+                    </div>
+                  </div>
+                  <ArrowRight className="w-4 h-4 shrink-0 text-ink-secondary" />
+                </Link>
               </div>
             </div>
           )}
         </section>
 
-        {/* 2-Step Complete Workflow Tools */}
+        {/* Complete Workflow Tools (2x2 Balanced Grid) */}
         <section className="max-w-[1040px] mx-auto px-4 sm:px-6 pb-12">
           <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-2 mb-5">
             <div>
               <h2 className="text-xs font-mono uppercase tracking-wider text-ink-muted">
-                The Complete Client Workflow
+                The Complete Freelance System
               </h2>
               <p className="font-serif text-2xl sm:text-3xl text-ink mt-1">
-                From ballpark price to signed boundary.
+                From initial quote to final payment.
               </p>
             </div>
             <p className="text-xs text-ink-secondary font-mono">
-              100% browser-based • Free PDF export
+              100% browser-based • Free to start
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {STUDIO_TOOLS.map((tool) => {
               const trackedPrimary = buildTrackedUrl(tool.baseUrl, sourceSlug);
               const trackedSecondary = buildTrackedUrl(
@@ -284,17 +310,17 @@ export function HubClient() {
             <div className="max-w-xl">
               <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-wider text-forest font-medium mb-1">
                 <Layers className="w-3.5 h-3.5" />
-                60 Free US Industry Guides
+                65 Free US Industry Guides
               </div>
               <h2 className="font-serif text-2xl sm:text-3xl text-ink">
-                Need numbers or clauses for a specific service?
+                Need numbers, clauses, or follow-up scripts right now?
               </h2>
               <p className="text-sm text-ink-secondary mt-1.5">
-                Open pre-filled pricing benchmarks and scope-protection templates across web design, Shopify, SEO, branding, consulting, and video production.
+                Open pre-filled pricing benchmarks, structured SOW templates, and situational overdue-invoice reminders across 65 dedicated pages.
               </p>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-2.5 shrink-0">
+            <div className="flex flex-wrap gap-2.5 shrink-0">
               <a
                 href={buildTrackedUrl(
                   "https://ratecraft-app.vercel.app/rates",
@@ -317,6 +343,13 @@ export function HubClient() {
                 <span>30 SOW Templates</span>
                 <ArrowUpRight className="w-4 h-4 text-ink-secondary" />
               </a>
+              <Link
+                href="/invoice-followup"
+                className="inline-flex items-center justify-center gap-2 min-h-[44px] px-4 rounded-xl bg-paper border border-hairline hover:border-ink/30 text-sm font-medium text-ink transition-colors"
+              >
+                <span>5 Invoice Guides</span>
+                <ArrowRight className="w-4 h-4 text-ink-secondary" />
+              </Link>
             </div>
           </div>
         </section>
@@ -331,10 +364,10 @@ export function HubClient() {
               Optional Pro Upgrades
             </span>
             <h2 className="font-serif text-3xl sm:text-4xl text-ink mt-1">
-              Start free. Upgrade only when sending client-branded PDFs.
+              Everything you need from quote to scope protection.
             </h2>
             <p className="text-sm sm:text-base text-ink-secondary mt-2 max-w-2xl">
-              Both apps remain free to use without creating an account. Pro passes remove the footer badge, unlock custom studio branding, and work via one-time PayPal checkout with zero surprise renewals.
+              Get both Pro studios for one year, or pick a single pass. Pay once via PayPal and keep working without automatic renewals. InvoiceFollowUp stays 100% free.
             </p>
           </div>
 
@@ -359,7 +392,9 @@ export function HubClient() {
                         </span>
                       ) : null}
                     </div>
-                    <p className="text-xs text-ink-secondary">{plan.subtitle}</p>
+                    <p className="text-xs sm:text-sm text-ink-secondary leading-relaxed">
+                      {plan.subtitle}
+                    </p>
 
                     <div className="mt-4 flex items-baseline gap-2">
                       <span className="font-mono text-3xl font-semibold text-ink tabular-nums">
@@ -398,6 +433,9 @@ export function HubClient() {
                       <span>Pay ${plan.priceUsd} USD via PayPal</span>
                       <ArrowUpRight className="w-4 h-4 shrink-0" />
                     </a>
+                    <p className="mt-2.5 text-[11px] text-ink-secondary leading-relaxed">
+                      {plan.paypalNoteHint}
+                    </p>
                   </div>
                 </div>
               );
@@ -405,8 +443,8 @@ export function HubClient() {
           </div>
 
           <div className="mt-4 rounded-xl border border-hairline bg-subtle px-4 py-3 text-xs text-ink-secondary leading-relaxed">
-            <strong className="text-ink font-medium">How Pro delivery works:</strong>{" "}
-            All checkout links open{" "}
+            <strong className="text-ink font-medium">Direct PayPal Checkout:</strong>{" "}
+            Every pass routes straight to{" "}
             <a
               href={PAYPAL_BASE_URL}
               target="_blank"
@@ -415,7 +453,7 @@ export function HubClient() {
             >
               paypal.me/craftappstudio
             </a>
-            . Include your email address and chosen tool in the PayPal note to receive your license key directly—no subscription trap.
+            . License keys are issued by email within 24 hours with zero hidden recurring charges.
           </div>
         </section>
       </main>
@@ -431,7 +469,7 @@ export function HubClient() {
               </span>
             </p>
             <p className="text-xs text-ink-muted mt-1 max-w-lg">
-              Pricing estimators and Statement of Work templates are commercial planning tools and do not constitute formal legal or tax advice.
+              Pricing estimators, SOW templates, and email follow-up drafts are commercial workflow aids and do not constitute formal legal, tax, or debt-collection advice.
             </p>
           </div>
 
@@ -452,6 +490,9 @@ export function HubClient() {
             >
               ScopeCraft
             </a>
+            <Link href="/invoice-followup" className="hover:text-ink py-1">
+              InvoiceFollowUp
+            </Link>
             <a
               href="https://github.com/matiascorrea2024-star"
               target="_blank"

@@ -6,6 +6,7 @@ export interface BillingPlan {
   billingCycle: string;
   badge?: string;
   checkoutUrl: string;
+  paypalNoteHint: string;
   includes: string[];
 }
 
@@ -30,30 +31,35 @@ export const HUB_PLANS: BillingPlan[] = [
   {
     id: "bundle-365",
     name: "All-Access Studio Bundle",
-    subtitle: "ScopeCraft Pro + RateCraft Pro (365-day pass)",
+    subtitle:
+      "Everything you need from quote to scope protection. Get both Pro studios for one year—pay once, keep working without automatic renewals.",
     priceUsd: 99,
     billingCycle: "one-time / 365 days",
-    badge: "Best Studio Value — Save $39",
+    badge: "Save $39 vs buying separately",
     checkoutUrl:
       AUTOMATED_UPGRADE_CONFIG.payhipBundleUrl || buildPayPalCheckoutUrl(99),
+    paypalNoteHint:
+      "After payment, include your email in the PayPal note. You'll receive two separate 365-day license keys—one for ScopeCraft and one for RateCraft—by email within 24 hours. No recurring payments.",
     includes: [
-      "365-day Pro license key for ScopeCraft + 365-day Pro key for RateCraft",
-      "Clean unbranded US Letter PDFs across quotes, SOWs, and Change Orders",
+      "Two 365-day Pro license keys: ScopeCraft Pro + RateCraft Pro ($138 combined value)",
+      "Clean unbranded US Letter PDFs across 3-tier quotes, SOWs, and Change Orders",
       "Your studio branding, saved local library, and share links",
-      "One-time payment via PayPal — no surprise auto-renewal",
+      "One-time payment via PayPal — zero surprise auto-renewals",
     ],
   },
   {
     id: "scopecraft-365",
     name: "ScopeCraft Pro (365-Day)",
-    subtitle: "Statements of Work + Change Orders",
+    subtitle: "Structured SOWs + Paid Change Orders",
     priceUsd: 79,
     billingCycle: "one-time / 365 days",
     checkoutUrl: buildPayPalCheckoutUrl(79),
+    paypalNoteHint:
+      "Include your email in the PayPal note. Your 365-day SC-PRO license key is emailed within 24 hours.",
     includes: [
       "Clean SOW & Change Order PDFs with custom studio header",
       "Unlimited Change Order exports & saved local templates",
-      "Instant Pro activation via SC-PRO license key",
+      "365-day SC-PRO license key emailed within 24 hours",
     ],
   },
   {
@@ -63,10 +69,12 @@ export const HUB_PLANS: BillingPlan[] = [
     priceUsd: 59,
     billingCycle: "one-time / 365 days",
     checkoutUrl: buildPayPalCheckoutUrl(59),
+    paypalNoteHint:
+      "Include your email in the PayPal note. Your 365-day RC-PRO license key is emailed within 24 hours.",
     includes: [
       "Clean 3-tier US Letter proposal PDFs with studio header",
       "Unlimited saved pricing presets & tier customization",
-      "Instant Pro activation via RC-PRO license key",
+      "365-day RC-PRO license key emailed within 24 hours",
     ],
   },
   {
@@ -76,6 +84,8 @@ export const HUB_PLANS: BillingPlan[] = [
     priceUsd: 12,
     billingCycle: "one-time / 30 days",
     checkoutUrl: buildPayPalCheckoutUrl(12),
+    paypalNoteHint:
+      "PayPal note: EMAIL + SCOPECRAFT or EMAIL + RATECRAFT. Your 30-day license key is emailed within 24 hours.",
     includes: [
       "Choose ScopeCraft Pro OR RateCraft Pro in your PayPal note",
       "Clean PDF exports + custom branding for 30 days",

@@ -148,6 +148,52 @@ print("Saved cover:", OUT_COVER.stat().st_size)
 
 m_hub = b64(HUB_SHOTS / "mobile_390_home.png")
 m_rate = b64(RATE_SHOTS / "mobile_390_home.png")
+m_invoice = b64(HUB_SHOTS / "mobile_390_invoice.png")
+
+render_mp4(
+    [
+        (
+            vslide(
+                "OVERDUE INVOICE SCRIPT",
+                "Your client is 14 days late paying.",
+                "Stop rewriting the same uncomfortable email trying not to sound desperate.",
+                "GET PAID CLEANLY",
+                warn=True,
+            ),
+            4.0,
+        ),
+        (
+            vslide(
+                "3 TONES • 3 STAGES",
+                "Friendly, Professional, or Firm in 10s.",
+                "Pick days overdue, stage, and tone—copy your email plus payment timeline.",
+                "FREE GENERATOR",
+                shot=m_invoice,
+            ),
+            5.5,
+        ),
+        (
+            vslide(
+                "NO AWKWARD CHASING",
+                "Lock deposits before the next project.",
+                "Pairs directly with RateCraft 3-tier quotes and ScopeCraft SOWs.",
+                "CRAFTAPP STUDIO",
+                shot=m_hub,
+            ),
+            4.5,
+        ),
+        (
+            vslide(
+                "FREE LINK IN BIO",
+                "InvoiceFollowUp is 100% free. Zero signup.",
+                "Tap link in bio -> craftapp-hub.vercel.app/?tool=invoice",
+                "FREE TOOL IN BIO",
+            ),
+            3.5,
+        ),
+    ],
+    VID_DIR / "02_overdue_invoice_followup_9x16.mp4",
+)
 
 render_mp4(
     [

@@ -6,6 +6,11 @@ import {
   resolveHighlightedTool,
   resolveSourceLabel,
 } from "@/config/tools";
+import {
+  DEFAULT_INVOICE_INPUT,
+  INVOICE_GUIDE_PAGES,
+  generateInvoiceReminder,
+} from "@/data/invoiceFollowUp";
 
 describe("CraftApp Hub billing & PayPal routing", () => {
   it("routes all paid passes strictly to paypal.me/craftappstudio and never Mercado Pago", () => {
@@ -16,15 +21,18 @@ describe("CraftApp Hub billing & PayPal routing", () => {
       expect(plan.checkoutUrl.startsWith("https://paypal.me/craftappstudio/")).toBe(true);
       expect(plan.checkoutUrl.endsWith("USD")).toBe(true);
       expect(plan.checkoutUrl.toLowerCase()).not.toContain("mercado");
+      expect(plan.paypalNoteHint.length).toBeGreaterThan(20);
     }
   });
 });
 
 describe("CraftApp Hub query-param routing & UTM tracking", () => {
-  it("resolves ?tool= aliases cleanly", () => {
+  it("resolves ?tool= aliases cleanly including invoice", () => {
     expect(resolveHighlightedTool("rate")?.key).toBe("rate");
     expect(resolveHighlightedTool("audit")?.key).toBe("audit");
     expect(resolveHighlightedTool("scope")?.key).toBe("scope");
+    expect(resolveHighlightedTool("invoice")?.key).toBe("invoice");
+    expect(resolveHighlightedTool("overdue")?.key).toBe("invoice");
     expect(resolveHighlightedTool("unknown")).toBeNull();
     expect(resolveHighlightedTool(null)).toBeNull();
   });
@@ -40,5 +48,34 @@ describe("CraftApp Hub query-param routing & UTM tracking", () => {
     expect(parsed.searchParams.get("utm_source")).toBe("tiktok");
     expect(parsed.searchParams.get("utm_medium")).toBe("bio_hub");
     expect(parsed.searchParams.get("utm_campaign")).toBe("craftapp_studio");
+  });
+});
+
+describe("InvoiceFollowUp generator & SEO guides", () => {
+  it("generates stage/tone-specific email subjects, timeline, and covers 5 SEO guides", () => {
+    expect(INVOICE_GUIDE_PAGES.length).toBe(5);
+
+    const friendlyFirst = generateInvoiceReminder({
+      ...DEFAULT_INVOICE_INPUT,
+      tone: "friendly",
+      stage: "first",
+      daysOverdue: 4,
+      amountUsd: 2400,
+    });
+    expect(friendlyFirst.subject).toContain("$2,400");
+    expect(friendlyFirst.body).toContain("INV-2026-08");
+    expect(friendlyFirst.timeline.length).toBe(3);
+    expect(friendlyFirst.timeline[0].active).toBe(true);
+
+    const firmFinal = generateInvoiceReminder({
+      ...DEFAULT_INVOICE_INPUT,
+      tone: "firm",
+      stage: "final",
+      daysOverdue: 28,
+    });
+    expect(firmFinal.subject).toContain("Work Pause Notice");
+    expect(firmFinal.body.toLowerCase()).not.toContain("lawsuit");
+    expect(firmFinal.body.toLowerCase()).not.toContain("collections");
+    expect(firmFinal.timeline[2].active).toBe(true);
   });
 });

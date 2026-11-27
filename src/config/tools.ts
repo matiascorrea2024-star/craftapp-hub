@@ -1,7 +1,7 @@
 export const HUB_SITE_URL = "https://craftapp-hub.vercel.app";
 export const HUB_SITE_NAME = "CraftApp Studio";
 
-export type ToolKey = "rate" | "audit" | "scope";
+export type ToolKey = "rate" | "audit" | "scope" | "invoice";
 
 export interface StudioTool {
   key: ToolKey;
@@ -16,12 +16,13 @@ export interface StudioTool {
   secondaryUrl: string;
   highlights: string[];
   badgeText: string;
+  isInternal?: boolean;
 }
 
 export const STUDIO_TOOLS: StudioTool[] = [
   {
     key: "rate",
-    stepLabel: "Step 01 — Price It Right",
+    stepLabel: "Step 01 — Price The Work",
     name: "RateCraft",
     shortTitle: "3-Tier Quote & Pricing Studio",
     tagline: "Stop quoting naive hourly rates. Send 3-tier proposal PDFs in 30s.",
@@ -40,12 +41,12 @@ export const STUDIO_TOOLS: StudioTool[] = [
   },
   {
     key: "audit",
-    stepLabel: "Step 02A — Stress-Test Before Sending",
+    stepLabel: "Step 02A — Audit Before Sending",
     name: "Scope-Creep Risk Check",
     shortTitle: "60-Second Scope Protection Audit",
     tagline: "Find missing exclusions and revision caps before kickoff.",
     description:
-      "Score any proposal on a transparent 100-point rubric and auto-insert missing protection clauses like revision limits, out-of-scope rules, and kill fees.",
+      "Score any proposal on a transparent 100-point rubric and auto-insert missing protection clauses like revision limits, out-of-scope rules, and cancellation notice terms.",
     baseUrl: "https://scopecraft-sow.vercel.app/audit",
     ctaLabel: "Run Free 60s Scope Check",
     secondaryLabel: "View Live Client SOW Preview",
@@ -59,12 +60,12 @@ export const STUDIO_TOOLS: StudioTool[] = [
   },
   {
     key: "scope",
-    stepLabel: "Step 02B — Lock The Work",
+    stepLabel: "Step 02B — Protect The Work",
     name: "ScopeCraft",
-    shortTitle: "Watertight SOW & Change Order Builder",
-    tagline: "Turn approved quotes into clear scope boundaries and paid add-ons.",
+    shortTitle: "Structured SOW & Change Order Builder",
+    tagline: "Turn approved quotes into clear deliverables, exclusions, and paid add-ons.",
     description:
-      "Build US Letter Statements of Work with explicit Not-Included lists, Change Order addendum PDFs when clients ask for extras, and shareable read-only links.",
+      "Clear, professionally structured SOWs with explicit deliverables, exclusions, and Change Order PDFs when clients ask for extras—plus read-only share links.",
     baseUrl: "https://scopecraft-sow.vercel.app",
     ctaLabel: "Open ScopeCraft SOW Builder",
     secondaryLabel: "Browse 30 Industry Templates",
@@ -75,6 +76,26 @@ export const STUDIO_TOOLS: StudioTool[] = [
       "30 industry templates for designers, devs, agencies",
     ],
     badgeText: "Best when a client asks for one more thing",
+  },
+  {
+    key: "invoice",
+    stepLabel: "Step 03 — Get Paid Cleanly",
+    name: "InvoiceFollowUp",
+    shortTitle: "Overdue Invoice Reminder Generator",
+    tagline: "Get paid without sounding desperate.",
+    description:
+      "Generate calm, copy-ready payment follow-up emails by tone (Friendly, Professional, Firm) and reminder stage—plus a clear client communication timeline.",
+    baseUrl: `${HUB_SITE_URL}/invoice-followup`,
+    ctaLabel: "Open Free Email Generator",
+    secondaryLabel: "5 Overdue Email Templates",
+    secondaryUrl: `${HUB_SITE_URL}/invoice-followup/overdue-invoice-reminder-email-template`,
+    highlights: [
+      "100% free & client-side — zero signup",
+      "First, Second, and Final polite follow-ups",
+      "Pure communication aid (no legal threats)",
+    ],
+    badgeText: "Stop staring at overdue invoices",
+    isInternal: true,
   },
 ];
 
@@ -106,6 +127,14 @@ export function resolveHighlightedTool(
   }
   if (normalized === "scope" || normalized === "sow" || normalized === "change") {
     return STUDIO_TOOLS.find((t) => t.key === "scope") || null;
+  }
+  if (
+    normalized === "invoice" ||
+    normalized === "followup" ||
+    normalized === "reminder" ||
+    normalized === "overdue"
+  ) {
+    return STUDIO_TOOLS.find((t) => t.key === "invoice") || null;
   }
   return null;
 }
